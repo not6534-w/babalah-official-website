@@ -8,6 +8,7 @@ import ProductDetail from "./pages/ProductDetail.tsx";
 import About from "./pages/About.tsx";
 import Collection from "./pages/Collection.tsx";
 import ComingSoon from "./pages/ComingSoon.tsx";
+import Admin from "./pages/Admin.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/collection" element={<Collection />} />
           <Route path="/coming-soon" element={<ComingSoon />} />
+          <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

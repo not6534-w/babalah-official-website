@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Feather, Sparkles, Sun, Wind } from "lucide-react";
+import { ArrowLeft, Feather, Sparkles, Sun, Wind, ArrowUpRight, MapPin } from "lucide-react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import WhereToBuy from "@/components/WhereToBuy";
 import Footer from "@/components/Footer";
-import { getProductById, products } from "@/lib/products";
+import { getAllProducts, getProductById } from "@/lib/products";
+import { getSiteConfig } from "@/data/site";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -13,10 +14,11 @@ const iconCycle = [Sparkles, Sun, Feather, Wind];
 const ProductDetail = () => {
   const { productId } = useParams();
   const product = getProductById(productId);
+  const site = getSiteConfig();
 
   if (!product) return <Navigate to="/collection" replace />;
 
-  const related = products.filter((p) => p.id !== product.id).slice(0, 3);
+  const related = getAllProducts().filter((p) => p.id !== product.id).slice(0, 3);
 
   return (
     <main className="relative min-h-screen bg-background overflow-x-hidden">
@@ -151,9 +153,26 @@ const ProductDetail = () => {
                 </ul>
               </div>
 
-              <p className="mt-10 text-[11px] tracking-[0.28em] uppercase text-[hsl(var(--gold))]/70 font-light">
-                Available at leading retailers and online platforms
-              </p>
+              <div className="mt-10 rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 backdrop-blur-xl">
+                <div className="flex items-center gap-2 text-[11px] tracking-[0.28em] uppercase text-[hsl(var(--gold))]/75 font-light">
+                  <MapPin className="h-3.5 w-3.5" />
+                  Available at leading retailers
+                </div>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  {site.retailers.map((retailer) => (
+                    <a
+                      key={retailer.name}
+                      href={retailer.href}
+                      target={retailer.href === "#" ? undefined : "_blank"}
+                      rel="noreferrer"
+                      className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-foreground/70 transition-all duration-500 hover:border-[hsl(var(--gold)/0.55)] hover:text-[hsl(var(--gold))] hover:shadow-[0_0_28px_hsl(var(--accent)/0.22)]"
+                    >
+                      {retailer.name}
+                      <ArrowUpRight className="h-3 w-3 transition-transform duration-500 group-hover:rotate-12" />
+                    </a>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>

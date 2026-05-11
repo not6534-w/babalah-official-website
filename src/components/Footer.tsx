@@ -1,33 +1,28 @@
 import { motion } from "framer-motion";
 import { Instagram, Facebook, Mail } from "lucide-react";
+import { getSiteConfig } from "@/data/site";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const socials = [
-  { name: "Instagram", href: "#", icon: Instagram },
-  { name: "Facebook", href: "#", icon: Facebook },
-  {
-    name: "TikTok",
-    href: "#",
-    icon: (props: React.SVGProps<SVGSVGElement>) => (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
-      </svg>
-    ),
-  },
-  {
-    name: "LINE",
-    href: "#",
-    icon: (props: React.SVGProps<SVGSVGElement>) => (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M3 11c0-4.4 4-8 9-8s9 3.6 9 8-4 8-9 8c-.9 0-1.7-.1-2.5-.3L5 21l1.3-3.8C4.3 15.7 3 13.5 3 11z" />
-        <path d="M8 10v4M8 10l3 4v-4M14 10v4h2.5M14 12h2M18 10v4" />
-      </svg>
-    ),
-  },
-];
+const socialIcons = {
+  Instagram,
+  Facebook,
+  TikTok: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+    </svg>
+  ),
+  LINE: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M3 11c0-4.4 4-8 9-8s9 3.6 9 8-4 8-9 8c-.9 0-1.7-.1-2.5-.3L5 21l1.3-3.8C4.3 15.7 3 13.5 3 11z" />
+      <path d="M8 10v4M8 10l3 4v-4M14 10v4h2.5M14 12h2M18 10v4" />
+    </svg>
+  ),
+} as const;
 
 const Footer = () => {
+  const site = getSiteConfig();
+
   return (
     <footer className="relative overflow-hidden grain border-t border-white/5">
       <div className="absolute inset-0 -z-10">
@@ -59,7 +54,7 @@ const Footer = () => {
               BABALAH
             </a>
             <p className="mt-6 text-sm md:text-base text-foreground/55 font-light leading-relaxed max-w-sm">
-              Effortless luxury for everyday beauty — crafted to let your skin glow with quiet confidence.
+              {site.brandStatement}
             </p>
             <div className="mt-8 h-px w-16 bg-gradient-to-r from-[hsl(var(--gold)/0.5)] to-transparent" />
             <p className="mt-6 text-[11px] tracking-[0.32em] uppercase text-foreground/45 font-light">
@@ -73,8 +68,8 @@ const Footer = () => {
               Connect
             </p>
             <ul className="space-y-4">
-              {socials.map((s) => {
-                const Icon = s.icon as React.ComponentType<React.SVGProps<SVGSVGElement>>;
+              {site.socials.map((s) => {
+                const Icon = socialIcons[s.name] as React.ComponentType<React.SVGProps<SVGSVGElement>>;
                 return (
                   <li key={s.name}>
                     <a
@@ -105,11 +100,11 @@ const Footer = () => {
           className="mt-20 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
         >
           <a
-            href="mailto:hello@babalah.com"
+            href={`mailto:${site.email}`}
             className="group inline-flex items-center gap-3 text-sm text-foreground/70 hover:text-[hsl(var(--gold))] transition-colors duration-500"
           >
             <Mail className="w-4 h-4" strokeWidth={1.25} />
-            <span className="tracking-[0.18em] font-light">hello@babalah.com</span>
+            <span className="tracking-[0.18em] font-light">{site.email}</span>
           </a>
           <p className="text-[11px] tracking-[0.32em] uppercase text-foreground/45 font-light">
             Available at leading retailers and online platforms

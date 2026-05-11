@@ -1,16 +1,13 @@
 import { motion } from "framer-motion";
 import { MapPin, ArrowUpRight } from "lucide-react";
+import { getSiteConfig } from "@/data/site";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const retailers = [
-  { name: "Shopee", href: "#", glow: "var(--accent)" },
-  { name: "Lazada", href: "#", glow: "var(--secondary)" },
-  { name: "TikTok Shop", href: "#", glow: "var(--soft-pink)" },
-  { name: "LINE Official", href: "#", glow: "var(--gold)" },
-];
 
 const WhereToBuy = () => {
+  const { retailers } = getSiteConfig();
+
   return (
     <section id="where-to-buy" className="relative py-40 md:py-40 overflow-hidden grain">
       {/* Atmospheric backdrop */}

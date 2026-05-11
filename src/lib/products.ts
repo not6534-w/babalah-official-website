@@ -24,7 +24,7 @@ export type Product = {
   howToUse: string[];
 };
 
-export const products: Product[] = [
+export const defaultProducts: Product[] = [
   {
     id: "classic",
     name: "Magic Powder — Classic",
@@ -210,4 +210,32 @@ export const products: Product[] = [
 
 export const featuredProductIds = ["classic", "oil-control", "beeswax", "refill"];
 
-export const getProductById = (id?: string) => products.find((p) => p.id === id);
+const PRODUCTS_STORAGE_KEY = "babalah_products";
+
+export const getAllProducts = (): Product[] => {
+  if (typeof window === "undefined") return defaultProducts;
+
+  try {
+    const stored = window.localStorage.getItem(PRODUCTS_STORAGE_KEY);
+    if (!stored) return defaultProducts;
+    const parsed = JSON.parse(stored) as Product[];
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : defaultProducts;
+  } catch {
+    return defaultProducts;
+  }
+};
+
+export const getProductById = (id?: string) => getAllProducts().find((p) => p.id === id);
+
+export const getFeaturedProducts = () =>
+  getAllProducts().filter((p) => featuredProductIds.includes(p.id));
+
+export const saveProducts = (nextProducts: Product[]) => {
+  window.localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(nextProducts));
+};
+
+export const resetProducts = () => {
+  window.localStorage.removeItem(PRODUCTS_STORAGE_KEY);
+};
+
+export const products = defaultProducts;
